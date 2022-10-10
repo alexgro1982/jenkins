@@ -1,0 +1,17 @@
+node("built-in"){
+    stage("Git checkout"){
+        git branch: 'main', credentialsId: 'f4cfb207-e585-4e31-bfb6-8ea1f4f47483', url: 'https://github.com/alexgro1982/jenkins.git'
+    }
+    stage("Check ssh key"){
+        secret_check=true
+    }
+    stage("Run playbook"){
+        if (secret_check){
+            sh 'ansible-playbook site.yml -i inventory/prod.yml'
+        }
+        else{
+            echo 'no more keys'
+        }
+        
+    }
+}
